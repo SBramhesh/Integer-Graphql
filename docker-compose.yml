@@ -1,0 +1,36 @@
+services:
+  api:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "5000:4500"
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+    image: postgres:11.1
+    ports:
+      - "5433:5432"
+    expose:
+      - "5432"
+    hostname: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: lireddit3
+    restart: on-failure
+    # networks:
+    #   - integration-tests
+  redis:
+    image: "docker.io/bitnami/redis:6.0-debian-10"
+    environment:
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    ports:
+      - "6380:6379"
+    hostname: redis
+    # volumes:
+    #   - "redis_data:/bitnami/redis/data"
