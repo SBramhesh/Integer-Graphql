@@ -41,8 +41,8 @@ const main = async () => {
   });
   await conn.runMigrations();
 
-  const amqpServer =
-    "amqps://hqfhejfk:qTxk4KZiTa_Lufa00CdOyshe9Jr4aAZ-@snake.rmq2.cloudamqp.com/hqfhejfk";
+  const amqpServer =process.env.AMQP_SERVER
+    ;
 
   const connection = await amqp.connect(amqpServer);
   const channel = await connection.createChannel();
@@ -61,45 +61,9 @@ const main = async () => {
     })
   );
   app.get("/", async (_req, res) => {
-    const result = {
-      firstname: "Jim",
-      lastname: "Jones",
-      email: "Jim@Jones.io",
-      password: "password",
-      market: 1,
-      croles: 2,
-      likes: 2,
-    };
+    
 
-    // await channel?.assertQueue("yooser_created");
-    // await channel?.sendToQueue(
-    //   "yooser_created",
-    //   Buffer.from(JSON.stringify(result))
-    // );
-    res.send(JSON.stringify(result));
-  });
-  app.post("/api/yoosers", async (req, res) => {
-    const result = {
-      firstname: "Jimmy",
-      lastname: "Jonesss",
-      email: "Jim@Jones.io",
-      password: "password",
-      market: 1,
-      croles: 2,
-      likes: 2,
-    };
-
-    try {
-      await channel.assertQueue("yooser_created");
-      await channel.sendToQueue(
-        "yooser_created",
-        Buffer.from(JSON.stringify(result))
-      );
-    } catch (err) {
-      console.log(`trying to connect to amqp: ${err}`);
-    }
-
-    return res.send(result);
+    return res.send("Hello World");
   });
   app.use(
     session({
