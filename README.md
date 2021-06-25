@@ -1,2 +1,2 @@
 # Integer-Graphql
-Grphql Clean architecture
+Graphql Clean architecture
