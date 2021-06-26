@@ -41,7 +41,7 @@ const main = async () => {
   });
   await conn.runMigrations();
 
-  const amqpServer =process.env.AMQP_SERVER
+  const amqpServer =process.env.AMQP_SERVER;
     ;
 
   const connection = await amqp.connect(amqpServer);

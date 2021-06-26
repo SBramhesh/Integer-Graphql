@@ -28,14 +28,8 @@ class RoleInput {
   description: string;
 }
 
-
-
 @Resolver(Role)
 export class RoleResolver {
-  
-
-  
-
   @Query(() => [Role])
   async roles(): Promise<[Role]> {
     let roles: [Role];
@@ -47,22 +41,6 @@ export class RoleResolver {
 
     `
     );
-
-    // const qb = getConnection()
-    //   .getRepository(Post)
-    //   .createQueryBuilder("p")
-    //   .innerJoinAndSelect("p.creator", "u", 'u.id = p."creatorId"')
-    //   .orderBy('p."createdAt"', "DESC")
-    //   .take(reaLimitPlusOne);
-
-    // if (cursor) {
-    //   qb.where('p."createdAt" < :cursor', {
-    //     cursor: new Date(parseInt(cursor)),
-    //   });
-    // }
-
-    // const posts = await qb.getMany();
-    // console.log("posts: ", posts);
 
     return roles;
   }
@@ -81,11 +59,10 @@ export class RoleResolver {
     return Role.create({
       ...input,
       creatorId: req.session.userId,
-      
     }).save();
   }
 
-   @Mutation(() => Role, { nullable: true })
+  @Mutation(() => Role, { nullable: true })
   //@UseMiddleware(isAuth)
   async updateRole(
     @Arg("id", () => Int) id: number,
@@ -108,26 +85,13 @@ export class RoleResolver {
     return result.raw[0];
   }
 
-  
   @Mutation(() => Boolean)
   //@UseMiddleware(isAuth)
   async deleteRole(
     @Arg("id", () => Int) id: number,
     @Ctx() { req }: MyContext
   ): Promise<boolean> {
-    // not cascade way
-    // const post = await Post.findOne(id);
-    // if (!post) {
-    //   return false;
-    // }
-    // if (post.creatorId !== req.session.userId) {
-    //   throw new Error("not authorized");
-    // }
-
-    // await Updoot.delete({ postId: id });
-    // await Post.delete({ id });
-
-    await Role.delete({ id, creatorId: req.session.userId});
+    await Role.delete({ id, creatorId: req.session.userId });
     return true;
   }
 }
